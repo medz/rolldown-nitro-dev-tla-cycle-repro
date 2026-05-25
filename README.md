@@ -31,16 +31,6 @@ npm run build:rollup
 npm run test:rollup
 ```
 
-In this workspace, the same commands can be run without installing by reusing
-`../v2/node_modules/.bin`:
-
-```sh
-npm run build:rolldown
-npm run test:rolldown
-npm run build:rollup
-npm run test:rollup
-```
-
 Expected result:
 
 - `test:rolldown` prints `timeout`.
