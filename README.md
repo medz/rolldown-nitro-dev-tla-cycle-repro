@@ -10,16 +10,20 @@ entry
         -> cloudflare plugin (top-level await)
         -> dev-server-logs plugin
           -> public app
+  -> lazy route (dynamic import, inlined with codeSplitting false)
+    -> public app
 ```
 
 The Cloudflare plugin's top-level await yields before the dev-server-logs plugin
-imports and calls back into `nitro/app`. With Rolldown's strict execution-order
-module wrappers this creates a pending async init cycle. Rollup preserves the
-module graph evaluation correctly and runs to completion.
+imports and calls back into `nitro/app`. Rolldown also has to inline the dynamic
+import because `codeSplitting` is disabled, matching Nitro dev's single-file
+server output. That combination creates async module init wrappers and a pending
+init cycle. Rollup preserves the module graph evaluation correctly and runs to
+completion.
 
 The Rolldown build targets `es2022` so top-level await itself is valid. This
 keeps the repro focused on the async init cycle, not on an unsupported syntax
-warning.
+warning. The Rolldown build does not enable `strictExecutionOrder`.
 
 Run with installed dependencies:
 

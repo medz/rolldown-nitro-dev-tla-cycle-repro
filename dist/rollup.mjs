@@ -39,9 +39,18 @@ function trapUnhandledErrors() {
   useNitroApp();
 }
 
+globalThis.lazyRoutePromise = Promise.resolve().then(function () { return lazyRoute; });
+
 trapUnhandledErrors();
 
 const app = useNitroApp();
 const hooks = useNitroHooks();
 
 console.log(JSON.stringify({ plugins: app.plugins, hooks }));
+
+const lazyRouteApp = useNitroApp();
+
+var lazyRoute = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  lazyRouteApp: lazyRouteApp
+});

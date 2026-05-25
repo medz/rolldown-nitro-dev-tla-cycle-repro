@@ -1,5 +1,15 @@
 //#region \0rolldown/runtime.js
+var __defProp = Object.defineProperty;
 var __esmMin = (fn, res) => () => (fn && (res = fn(fn = 0)), res);
+var __exportAll = (all, no_symbols) => {
+	let target = {};
+	for (var name in all) __defProp(target, name, {
+		get: all[name],
+		enumerable: true
+	});
+	if (!no_symbols) __defProp(target, Symbol.toStringTag, { value: "Module" });
+	return target;
+};
 //#endregion
 //#region src/cloudflare-plugin.mjs
 function cloudflareDevPlugin(app) {
@@ -50,25 +60,28 @@ var init_public_app = __esmMin((async () => {
 }));
 //#endregion
 //#region src/error-hooks.mjs
+await init_internal_app();
 function trapUnhandledErrors() {
 	useNitroApp();
 }
-var init_error_hooks = __esmMin((async () => {
-	await init_internal_app();
+//#endregion
+//#region src/lazy-route.mjs
+var lazy_route_exports = /* @__PURE__ */ __exportAll({ lazyRouteApp: () => lazyRouteApp });
+var lazyRouteApp;
+var init_lazy_route = __esmMin((async () => {
+	await init_public_app();
+	lazyRouteApp = useNitroApp();
 }));
 //#endregion
 //#region src/entry.mjs
-var app, hooks;
+await init_public_app();
+globalThis.lazyRoutePromise = init_lazy_route().then(() => lazy_route_exports);
+trapUnhandledErrors();
+const app = useNitroApp();
+const hooks = useNitroHooks();
+console.log(JSON.stringify({
+	plugins: app.plugins,
+	hooks
+}));
 //#endregion
-await __esmMin((async () => {
-	await init_public_app();
-	await init_error_hooks();
-	trapUnhandledErrors();
-	app = useNitroApp();
-	hooks = useNitroHooks();
-	console.log(JSON.stringify({
-		plugins: app.plugins,
-		hooks
-	}));
-}))();
 export {};

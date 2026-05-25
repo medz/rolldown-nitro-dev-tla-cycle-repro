@@ -3,8 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:rolldown": "rolldown src/entry.mjs --file dist/rolldown.mjs --format esm --platform node --transform.target es2022 --strict-execution-order",
-    "build:rollup": "rollup src/entry.mjs --file dist/rollup.mjs --format esm",
+    "build:rolldown": "rolldown -c rolldown.config.mjs",
+    "build:rollup": "rollup src/entry.mjs --file dist/rollup.mjs --format esm --inlineDynamicImports",
     "test:rolldown": "node --input-type=module -e \"const result = await Promise.race([import('./dist/rolldown.mjs').then(() => 'resolved'), new Promise(resolve => setTimeout(() => resolve('timeout'), 1000))]); console.log(result); process.exit(result === 'timeout' ? 0 : 1)\"",
     "test:rollup": "node dist/rollup.mjs"
   },
