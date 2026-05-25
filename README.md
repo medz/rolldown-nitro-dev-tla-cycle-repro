@@ -35,9 +35,9 @@ In this workspace, the same commands can be run without installing by reusing
 `../v2/node_modules/.bin`:
 
 ```sh
-PATH=../v2/node_modules/.bin:$PATH npm run build:rolldown
+npm run build:rolldown
 npm run test:rolldown
-PATH=../v2/node_modules/.bin:$PATH npm run build:rollup
+npm run build:rollup
 npm run test:rollup
 ```
 
